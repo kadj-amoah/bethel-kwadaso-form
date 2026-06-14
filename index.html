@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="theme-color" content="#5b2a86" />
+  <title>Bethel Society Kwadaso — Announcements</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <h1>Bethel Society Kwadaso</h1>
+      <p class="subtitle">Methodist Church Ghana · Weekly Announcements</p>
+    </div>
+  </header>
+
+  <main>
+    <form id="announcement-form" autocomplete="off" novalidate>
+
+      <!-- ===================== HEADER INFO ===================== -->
+      <section class="card">
+        <h2>Header Info</h2>
+        <div class="grid two">
+          <label>Service date
+            <input type="date" id="date" name="date" required />
+          </label>
+          <div class="readouts">
+            <span>Sunday of month: <b id="sunday_of_month">—</b></span>
+            <span>Sunday of year: <b id="sunday_of_year">—</b></span>
+          </div>
+        </div>
+        <label>Preacher
+          <input type="text" id="preacher" name="preacher" placeholder="e.g. Very Rev Kwame Amoah Mensah" />
+        </label>
+        <label>Welcome note <span class="muted">(optional — overrides default)</span>
+          <textarea id="welcome_note" name="welcome_note" rows="3"
+            placeholder="We welcome you all to today's service…"></textarea>
+        </label>
+      </section>
+
+      <!-- ===================== ATTENDANCE ===================== -->
+      <section class="card">
+        <h2>Attendance</h2>
+        <table class="grid-table" id="attendance-table">
+          <thead>
+            <tr><th></th><th>Adult Service</th><th>Youth Service</th><th>Total</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Male</th>
+              <td><input type="number" min="0" inputmode="numeric" id="adult_male" data-att /></td>
+              <td><input type="number" min="0" inputmode="numeric" id="youth_male" data-att /></td>
+              <td class="auto" id="total_male">0</td>
+            </tr>
+            <tr>
+              <th>Female</th>
+              <td><input type="number" min="0" inputmode="numeric" id="adult_female" data-att /></td>
+              <td><input type="number" min="0" inputmode="numeric" id="youth_female" data-att /></td>
+              <td class="auto" id="total_female">0</td>
+            </tr>
+            <tr class="total-row">
+              <th>Total</th>
+              <td class="auto" id="total_adult">0</td>
+              <td class="auto" id="total_youth">0</td>
+              <td class="auto grand" id="total_attendance">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ===================== FINANCE ===================== -->
+      <section class="card">
+        <h2>Finance</h2>
+        <div class="finance-grid">
+          <label>Tithe<div class="ghs"><span>GHS</span><input type="number" min="0" step="0.01" inputmode="decimal" id="tithe" data-fin /></div></label>
+          <label>Offering<div class="ghs"><span>GHS</span><input type="number" min="0" step="0.01" inputmode="decimal" id="offering" data-fin /></div></label>
+          <label>Thanks Offering<div class="ghs"><span>GHS</span><input type="number" min="0" step="0.01" inputmode="decimal" id="thanks_offering" data-fin /></div></label>
+          <label>Monthly Offering<div class="ghs"><span>GHS</span><input type="number" min="0" step="0.01" inputmode="decimal" id="monthly_offering" data-fin /></div></label>
+        </div>
+        <div class="finance-total">Total <b>GHS <span id="finance_total">0.00</span></b></div>
+      </section>
+
+      <!-- ===================== WEEKLY PROGRAM ===================== -->
+      <section class="card">
+        <h2>Weekly Program</h2>
+        <div class="item-list" id="weekly_program" data-list></div>
+        <button type="button" class="add-btn" data-add="weekly_program">+ Add item</button>
+      </section>
+
+      <!-- ===================== SPECIAL PROGRAM ===================== -->
+      <section class="card">
+        <h2>Special Program</h2>
+        <div class="item-list" id="special_program" data-list></div>
+        <button type="button" class="add-btn" data-add="special_program">+ Add item</button>
+      </section>
+
+      <!-- ===================== SPECIAL ANNOUNCEMENTS ===================== -->
+      <section class="card">
+        <h2>Special Announcements</h2>
+        <div class="item-list" id="announcements" data-list></div>
+        <button type="button" class="add-btn" data-add="announcements">+ Add item</button>
+      </section>
+
+      <!-- ===================== BEREAVEMENTS ===================== -->
+      <section class="card">
+        <h2>Bereavements</h2>
+        <p class="muted small">You can attach a photo (optional). It's automatically shrunk before
+          upload to keep things fast. If you skip it, the media team can add one on Sunday.</p>
+        <div class="bereavement-list" id="bereavements"></div>
+        <button type="button" class="add-btn" id="add-bereavement">+ Add bereavement notice</button>
+      </section>
+
+      <!-- ===================== SUBMIT ===================== -->
+      <div class="submit-bar">
+        <button type="submit" id="submit-btn">Submit announcement</button>
+        <p id="status" class="status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+  </main>
+
+  <!-- ===================== TEMPLATES ===================== -->
+  <template id="tpl-item">
+    <div class="item-row">
+      <textarea class="item-text" rows="2" placeholder="Announcement text…"></textarea>
+      <div class="item-controls">
+        <label class="dur">⏱ <input type="number" class="item-dur" min="1" value="8" /> s</label>
+        <label class="auto-adv"><input type="checkbox" class="item-auto" checked /> Auto</label>
+        <button type="button" class="mini" data-move="up" title="Move up">↑</button>
+        <button type="button" class="mini" data-move="down" title="Move down">↓</button>
+        <button type="button" class="mini danger" data-remove title="Remove">✕</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-bereavement">
+    <fieldset class="bereavement">
+      <legend>Notice <span class="b-index"></span>
+        <button type="button" class="mini danger b-remove" title="Remove">✕</button>
+      </legend>
+      <label>Name of deceased<input type="text" class="b-name" /></label>
+      <label>Relation info<input type="text" class="b-relation" placeholder="e.g. wife of Mr. Kwadwo Buachie" /></label>
+      <label>Funeral date<input type="text" class="b-date" placeholder="e.g. 13th June 2026" /></label>
+      <label>Laying in state<input type="text" class="b-state" /></label>
+      <label>Burial venue<input type="text" class="b-burial" /></label>
+      <label>Final rites venue<input type="text" class="b-rites" /></label>
+      <label>Photo <span class="muted">(optional — shrunk automatically)</span>
+        <input type="file" class="b-photo-input" accept="image/*" />
+      </label>
+      <div class="b-photo-preview"></div>
+      <div class="b-auto">
+        <label><input type="checkbox" class="b-autoadv" /> Auto-advance</label>
+        <label class="dur">⏱ <input type="number" class="b-dur" min="1" value="12" /> s</label>
+      </div>
+    </fieldset>
+  </template>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

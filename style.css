@@ -1,0 +1,156 @@
+:root {
+  --primary: #5b2a86;
+  --primary-dark: #3f1d5e;
+  --accent: #c9a227;
+  --bg: #f4f1f7;
+  --card: #ffffff;
+  --text: #222;
+  --muted: #777;
+  --border: #d9d2e2;
+  --ok: #2e7d32;
+  --err: #c62828;
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.45;
+}
+
+.app-header {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  padding: 1.4rem 1rem;
+  text-align: center;
+}
+.app-header h1 { margin: 0; font-size: 1.35rem; }
+.subtitle { margin: .25rem 0 0; opacity: .85; font-size: .85rem; }
+
+main { max-width: 720px; margin: 0 auto; padding: 1rem; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+.card h2 {
+  margin: 0 0 .9rem;
+  font-size: 1.05rem;
+  color: var(--primary-dark);
+  border-bottom: 2px solid var(--accent);
+  display: inline-block;
+  padding-bottom: .2rem;
+}
+
+label { display: block; margin: .55rem 0; font-size: .9rem; font-weight: 600; }
+.muted { color: var(--muted); font-weight: 400; }
+.small { font-size: .8rem; }
+
+input[type=text], input[type=date], input[type=number], textarea {
+  width: 100%;
+  padding: .6rem .7rem;
+  margin-top: .25rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  background: #fff;
+}
+textarea { resize: vertical; }
+input:focus, textarea:focus { outline: 2px solid var(--primary); border-color: var(--primary); }
+
+.grid.two { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: end; }
+.readouts { display: flex; flex-direction: column; gap: .3rem; font-size: .85rem; color: var(--muted); }
+.readouts b { color: var(--primary-dark); }
+
+/* Attendance table */
+.grid-table { width: 100%; border-collapse: collapse; text-align: center; }
+.grid-table th, .grid-table td { padding: .4rem; border: 1px solid var(--border); }
+.grid-table thead th { background: #f0ebf6; font-size: .82rem; }
+.grid-table tbody th { background: #faf8fc; text-align: left; padding-left: .6rem; }
+.grid-table input { width: 100%; text-align: center; margin: 0; }
+.grid-table .auto { background: #f7f4fb; font-weight: 700; color: var(--primary-dark); }
+.grid-table .total-row th, .grid-table .total-row .auto { background: #efe7f8; }
+.grid-table .grand { background: var(--primary); color: #fff; }
+
+/* Finance */
+.finance-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+.ghs { display: flex; align-items: center; gap: .4rem; margin-top: .25rem; }
+.ghs span { font-size: .8rem; color: var(--muted); font-weight: 700; }
+.ghs input { margin: 0; }
+.finance-total { margin-top: 1rem; text-align: right; font-size: 1.05rem; }
+.finance-total b { color: var(--primary-dark); }
+
+/* Dynamic item lists */
+.item-list { display: flex; flex-direction: column; gap: .6rem; }
+.item-row {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: .6rem;
+  background: #fafafa;
+}
+.item-text { margin: 0; }
+.item-controls {
+  display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+  margin-top: .5rem; font-size: .85rem; font-weight: 600;
+}
+.item-controls .dur input { width: 56px; margin: 0; padding: .3rem; text-align: center; }
+.item-controls label { margin: 0; display: inline-flex; align-items: center; gap: .3rem; }
+.item-controls .auto-adv input { width: auto; }
+
+.mini {
+  border: 1px solid var(--border); background: #fff; border-radius: 8px;
+  width: 34px; height: 34px; font-size: 1rem; cursor: pointer; line-height: 1;
+}
+.mini:hover { background: #f0ebf6; }
+.mini.danger { color: var(--err); border-color: #f0caca; }
+.mini.danger:hover { background: #fdeaea; }
+
+.add-btn {
+  margin-top: .75rem; width: 100%; padding: .65rem;
+  border: 1px dashed var(--primary); background: #fff; color: var(--primary);
+  border-radius: 10px; font-size: .95rem; font-weight: 600; cursor: pointer;
+}
+.add-btn:hover { background: #f3eefa; }
+
+/* Bereavement */
+.bereavement-list { display: flex; flex-direction: column; gap: 1rem; }
+.bereavement {
+  border: 1px solid var(--border); border-radius: 10px; padding: .8rem; margin: 0;
+  background: #fafafa;
+}
+.bereavement legend { font-weight: 700; color: var(--primary-dark); padding: 0 .4rem; display: flex; align-items: center; gap: .5rem; }
+.b-photo-preview { margin: .4rem 0; }
+.b-thumb { max-width: 140px; max-height: 140px; border-radius: 8px; border: 1px solid var(--border); object-fit: cover; }
+.b-auto { display: flex; gap: 1rem; align-items: center; margin-top: .5rem; }
+.b-auto label { margin: 0; display: inline-flex; align-items: center; gap: .35rem; }
+.b-auto .dur input { width: 56px; }
+
+/* Submit */
+.submit-bar { position: sticky; bottom: 0; padding: 1rem 0 1.5rem; }
+#submit-btn {
+  width: 100%; padding: .95rem; font-size: 1.05rem; font-weight: 700;
+  background: var(--primary); color: #fff; border: none; border-radius: 12px;
+  cursor: pointer; box-shadow: 0 4px 12px rgba(91,42,134,.3);
+}
+#submit-btn:hover { background: var(--primary-dark); }
+#submit-btn:disabled { opacity: .6; cursor: progress; }
+
+.status { margin: .75rem 0 0; text-align: center; font-weight: 600; min-height: 1.2em; }
+.status.ok { color: var(--ok); }
+.status.err { color: var(--err); }
+
+@media (max-width: 520px) {
+  .grid.two, .finance-grid { grid-template-columns: 1fr; }
+  .grid-table { font-size: .85rem; }
+}
