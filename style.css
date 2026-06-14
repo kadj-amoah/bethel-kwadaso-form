@@ -35,6 +35,12 @@ body {
 
 main { max-width: 720px; margin: 0 auto; padding: 1rem; }
 
+.connect { margin-bottom: 1rem; padding: .6rem .9rem; border-radius: 10px; font-size: .9rem; font-weight: 600; }
+.connect:empty { display: none; }
+.connect.ok { background: #e6f4ea; color: var(--ok); }
+.connect.warn { background: #fff4e0; color: var(--warn, #b26a00); }
+.linkbtn { background: none; border: none; color: inherit; font: inherit; text-decoration: underline; cursor: pointer; padding: 0; }
+
 .card {
   background: var(--card);
   border: 1px solid var(--border);

@@ -1,22 +1,18 @@
 // ---------------------------------------------------------------------------
-// Bethel Announcements — Steward Form configuration
+// Bethel Announcements — Steward Form configuration (TEMPLATE)
 //
-// Copy this file to `config.js` (in the same folder) and fill in the values.
-// `config.js` is what the form actually loads; keep `config.sample.js` as the
-// reference template.
+// Copy this file to `config.js` and set owner/repo for your data repo.
 //
-// SECURITY NOTE (from the design doc):
-//   The fine-grained PAT below lives in client-side JavaScript. That is an
-//   accepted risk for a church bulletin system: scope the token to ONLY the
-//   announcements repo with `Contents: Read and Write`, and keep that repo
-//   PRIVATE so the token isn't trivially discoverable via GitHub code search.
-//   Worst case if leaked: someone can overwrite this week's announcement JSON.
+// IMPORTANT: do NOT put the GitHub token here. Pages serves this file publicly
+// and GitHub auto-revokes any PAT committed to a public repo. The token is
+// instead stored once in the steward's browser (localStorage) via a one-time
+// setup link of the form:   <form-url>/#t=<THE_TOKEN>
+// Opening that link saves the token on the device and strips it from the URL.
 // ---------------------------------------------------------------------------
 window.GITHUB_CONFIG = {
-  owner:  "your-github-username",            // GitHub account / org that owns the repo
-  repo:   "bethel-kwadaso-announcements",    // the PRIVATE data repo (Repo B)
-  branch: "main",                            // branch to write to
-  path:   "data/latest.json",                // file the form overwrites each week
-  imagesDir: "data/images",                  // bereavement photos are committed here
-  token:  "github_pat_xxxxxxxxxxxxxxxxxxxx",  // fine-grained PAT, Contents R/W on this repo only
+  owner:  "your-github-username",
+  repo:   "bethel-kwadaso-announcements",
+  branch: "main",
+  path:   "data/latest.json",
+  imagesDir: "data/images",
 };

@@ -226,12 +226,31 @@
 
   /* --------------------------- GitHub API I/O ---------------------------- */
   const cfg = window.GITHUB_CONFIG;
+  const TOKEN_KEY = "bsk_gh_token";
   const contentsUrl = (path) =>
     `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${path}`;
 
+  // --- Token lives in the browser, never in the repo ---------------------
+  function getToken() { return localStorage.getItem(TOKEN_KEY) || ""; }
+  function setToken(t) {
+    if (t) localStorage.setItem(TOKEN_KEY, t.trim());
+    else localStorage.removeItem(TOKEN_KEY);
+  }
+  // One-time setup link: …/#t=<TOKEN> stores the token, then strips the hash.
+  function consumeTokenFromHash() {
+    const h = location.hash || "";
+    const m = h.match(/[#&]t=([^&]+)/);
+    if (m) {
+      setToken(decodeURIComponent(m[1]));
+      history.replaceState(null, "", location.pathname + location.search);
+      return true;
+    }
+    return false;
+  }
+
   function ghHeaders() {
     return {
-      Authorization: `Bearer ${cfg.token}`,
+      Authorization: `Bearer ${getToken()}`,
       Accept: "application/vnd.github+json",
       "X-GitHub-Api-Version": "2022-11-28",
     };
@@ -295,15 +314,17 @@
   }
 
   function configReady() {
-    return cfg && cfg.owner && cfg.token &&
-      !cfg.owner.startsWith("your-") && !cfg.token.includes("xxxx");
+    return cfg && cfg.owner && getToken();
   }
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!configReady()) {
-      setStatus("Form not configured: copy config.sample.js → config.js and fill in the GitHub details.", "err");
-      return;
+      promptForToken("This device isn't connected yet. Paste the access token to enable submitting:");
+      if (!configReady()) {
+        setStatus("Not connected — submitting needs the access token (ask the media team).", "err");
+        return;
+      }
     }
     submitBtn.disabled = true;
     setStatus("Saving…");
@@ -326,7 +347,33 @@
     }
   });
 
-  /* --------------------- Seed one empty row per list --------------------- */
+  /* ----------------------- Token connect UI ------------------------------ */
+  function promptForToken(message) {
+    const t = window.prompt(message || "Paste the GitHub access token for this form:", "");
+    if (t && t.trim()) { setToken(t); reflectConnection(); }
+  }
+
+  function reflectConnection() {
+    const banner = $("#connect-banner");
+    if (!banner) return;
+    if (getToken()) {
+      banner.className = "connect ok";
+      banner.innerHTML = `Connected ✓ <button type="button" id="change-token" class="linkbtn">change</button>`;
+    } else {
+      banner.className = "connect warn";
+      banner.innerHTML = `Not connected — <button type="button" id="set-token" class="linkbtn">tap to enter access token</button>`;
+    }
+  }
+
+  document.addEventListener("click", (e) => {
+    if (e.target.id === "set-token") promptForToken();
+    if (e.target.id === "change-token") promptForToken("Update the access token for this device:");
+  });
+
+  /* ------------------------------ Init ----------------------------------- */
+  if (consumeTokenFromHash()) setStatus("Device connected ✓  You can submit now.", "ok");
+  reflectConnection();
+
   ["weekly_program", "special_program", "announcements"].forEach((id) => addItem(id));
   refreshAttendance();
   refreshFinance();
